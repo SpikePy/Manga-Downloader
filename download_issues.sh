@@ -26,16 +26,16 @@ for issue in $(seq ${issue_start} ${issue_end}); do
     fi
 
     echo '1. create directory'
-    mkdir --parent "${issue}"
+    mkdir --parent "berserk_${issue}"
 
     echo '2. download images'
     echo "${issue_html}" |
     	grep --fixed-strings 'img class' | 
     	grep --fixed-strings 'jpg' | 
     	cut --delimiter='"' --fields=4 | 
-    	xargs --max-lines --max-procs=20 wget --quiet --no-clobber --directory-prefix="${issue}"
+    	xargs --max-lines --max-procs=20 wget --quiet --no-clobber --directory-prefix="berserk_${issue}"
 
     echo "3. generate PDF berserk_${issue}.pdf"
-    convert $(ls "${issue}"/* -v | tr '\n' ' ') -auto-orient "berserk_${issue}.pdf"
+    convert $(ls "berserk_${issue}"/* -v | tr '\n' ' ') -auto-orient "berserk_${issue}.pdf"
     echo
 done
