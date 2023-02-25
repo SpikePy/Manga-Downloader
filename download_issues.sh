@@ -37,5 +37,5 @@ for issue in $(seq ${issue_start} ${issue_end}); do
 
     echo "3. generate PDF berserk_${issue}.pdf"
     convert $(ls "${issue}"/* -v | tr '\n' ' ') -auto-orient "berserk_${issue}.pdf"
-    echo ''
+    echo
 done
