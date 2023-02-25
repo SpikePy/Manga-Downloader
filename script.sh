@@ -19,9 +19,10 @@ for issue in $(seq ${issue_start} ${issue_end}); do
     # prefix/zero pad issue number
     issue=$(printf "%03d" ${issue})
 
-    echo "Berserk ${issue}"
+    echo "Berserk-${issue}"
     echo "-----------"
-
+    
+    # Get HTML which contains the links to the images
     issue_html=$(wget --quiet --output-document=- "https://readberserk.com/chapter/berserk-chapter-${issue}/")
 
     if ! echo "${issue_html}" | grep --fixed-strings --quiet 'img class'; then
@@ -33,12 +34,14 @@ for issue in $(seq ${issue_start} ${issue_end}); do
     mkdir --parent "${issue}"
 
     echo '2. download images'
-    issue_html=$(wget --quiet --output-document=- "https://readberserk.com/chapter/berserk-chapter-${issue}/")
-
-    echo "${issue_html}" | grep --fixed-strings 'img class' | grep --fixed-strings 'jpg' | cut --delimiter='"' --fields=4 | tr '\n' ' ' | xargs  wget --quiet --no-clobber --directory-prefix="${issue}"
+    echo "${issue_html}" |
+    	grep --fixed-strings 'img class' | 
+    	grep --fixed-strings 'jpg' | 
+    	cut --delimiter='"' --fields=4 | 
+    	tr '\n' ' ' | 
+    	xargs  wget --quiet --no-clobber --directory-prefix="${issue}"
 
     echo "3. generate PDF berserk_${issue}.pdf"
     convert $(ls "${issue}"/* -v | tr '\n' ' ') -auto-orient "berserk_${issue}.pdf"
-
     echo ''
 done
