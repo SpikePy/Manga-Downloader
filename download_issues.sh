@@ -2,13 +2,12 @@
 clear
 cd "$(dirname $0)"
 
-echo 'Berserk Downloader'
-echo '=================='
-echo
+printf 'Berserk Downloader\n'
+printf '==================\n\n'
 
-echo -n 'Start from issue: '; read issue_start
-echo -n 'Last issue: '; read issue_end
-echo ''
+printf 'Start from issue: '; read issue_start
+printf 'Last issue: '; read issue_end
+printf '\n'
 
 for issue in $(seq ${issue_start} ${issue_end}); do
 
@@ -22,7 +21,8 @@ for issue in $(seq ${issue_start} ${issue_end}); do
     issue_html=$(wget --quiet --output-document=- "https://readberserk.com/chapter/berserk-chapter-${issue}/")
 
     if ! echo "${issue_html}" | grep --fixed-strings --quiet 'img class'; then
-        echo "Issue not found"
+        printf "Issue not found\n\n"
+        continue
     fi
 
     echo '1. create directory'
