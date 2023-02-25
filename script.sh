@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 clear
+cd "$(dirname $0)"
 
 cat << EOF
 Berserk Downloader
@@ -7,19 +8,15 @@ Berserk Downloader
 
 EOF
 
-if [ $# -eq 1 ]; then
-    issue_start=$1
-    issue_end=$1
-elif [ $# -eq 2 ]; then
-    issue_start=$1
-    issue_end=$2
-else
-  echo 'This script needs either 1 argument (the number of the issue you want to download) or 2 arguments (the range of issues you want to download)'
-    exit 1
-fi
+echo -n 'Start from issue: '
+read issue_start
+echo -n 'Last issue: '
+read issue_end
+echo ''
 
 for issue in $(seq ${issue_start} ${issue_end}); do
 
+    # prefix/zero pad issue number
     issue=$(printf "%03d" ${issue})
 
     echo "Berserk ${issue}"
