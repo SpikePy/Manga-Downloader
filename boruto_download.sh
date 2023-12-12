@@ -5,13 +5,16 @@ cd "$(dirname $0)"
 printf 'Boruto Downloader\n'
 printf '==================\n\n'
 
-if [ $# -ne 2 ]; then
+if [ $# -eq 1 ]; then
+  issue_start=$1
+  issue_end=$1
+elif [ $# -eq 2 ]; then
+  issue_start=$1
+  issue_end=$2
+else
   printf 'Start from issue: '; read issue_start
   printf 'Last issue: '; read issue_end
   printf '\n'
-else
-  issue_start=$1
-  issue_end=$2
 fi
 
 for issue in $(seq ${issue_start} ${issue_end}); do
@@ -34,8 +37,8 @@ for issue in $(seq ${issue_start} ${issue_end}); do
 
     echo '2. download images'
     echo "${issue_html}" |
-    	 grep --only-matching '<img .*jpg"' |
-       grep --only-matching 'http.*\.jpg' |
+    	 grep --only-matching --extended-regexp '<img .*\.(jpg|png|webp)"' |
+       grep --only-matching --extended-regexp 'http.*\.(jpg|png|webp)' |
     	xargs --max-lines --max-procs=20 wget --quiet --no-clobber --directory-prefix="boruto_${issue}"
 
     echo "3. generate PDF boruto_${issue}.pdf"
