@@ -15,11 +15,14 @@ else
 fi
 
 for issue in $(seq ${issue_start} ${issue_end}); do
+
     echo "Borto-${issue}"
     echo "-----------"
 
     # Get HTML which contains the links to the images
     issue_html=$(wget --quiet --output-document=- "https://boruto-manga.com/manga/boruto-chapter-${issue}/")
+
+    issue=$(printf "%02d" ${issue})
 
     if ! echo "${issue_html}" | grep --fixed-strings --quiet 'img '; then
         printf "Issue not found\n\n"
